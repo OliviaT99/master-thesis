@@ -1,0 +1,28 @@
+data:
+  treatment: treatment_flg
+  outcome: target
+  propensity: 0.4998
+
+split:
+  train: 0.50
+  validation: 0.20
+  test: 0.30
+  random_state: 42
+
+policy:
+  constraint: "top_k"
+  budget_fraction: 0.30
+
+cate:
+  pseudo_outcome: DR
+  function_class: segment
+
+ptcate:
+  gamma_grid:
+    - 0.0
+    - 0.2
+    - 0.4
+    - 0.8
+    - 0.9
+    - 0.98
+  iterations: 1
