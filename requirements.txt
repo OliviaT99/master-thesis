@@ -1,0 +1,10 @@
+numpy>=2.0
+pandas>=2.0
+scipy>=1.10
+scikit-learn>=1.9
+scikit-uplift>=0.5.1
+matplotlib>=3.8
+seaborn>=0.13
+PyYAML>=6.0
+pyarrow>=25.0.1
+
