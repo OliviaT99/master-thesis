@@ -66,8 +66,15 @@ def hard_allocation(g, c, q):
     return a
 
 
-def smooth_allocation(g, c, q, T, delta, iters=200):
-    """p = sigmoid((g/c - delta - lam)/T), lam >= 0 calibrated so mean(c p) <= q."""
+def smooth_allocation(g, c, q, T, delta):
+    """p = sigmoid((g/c - delta - lam)/T), lam >= 0 calibrated so mean(c p) <= q.
+
+    Root found with Brent's method (about 10-40 spend evaluations instead of 200
+    bisection steps), then nudged up by single floating-point steps until the
+    spend is feasible, so the budget is never exceeded by rounding.
+    """
+    from scipy.optimize import brentq
+
     g, c = np.asarray(g, float), np.asarray(c, float)
     if q <= 0:
         return np.zeros_like(g), np.inf
@@ -75,11 +82,17 @@ def smooth_allocation(g, c, q, T, delta, iters=200):
     spend = lambda lam: np.mean(c * expit((r - delta - lam) / T))
     if spend(0.0) <= q:
         return expit((r - delta) / T), 0.0
-    lo, hi = 0.0, max(1.0, r.max() - delta + 50 * T)
-    for _ in range(iters):
-        mid = 0.5 * (lo + hi)
-        lo, hi = (mid, hi) if spend(mid) > q else (lo, mid)
-    return expit((r - delta - hi) / T), hi
+    hi = max(1.0, r.max() - delta + 50 * T)
+    while spend(hi) > q:                      # bracket (only for extreme inputs)
+        hi *= 2
+    lam = brentq(lambda l: spend(l) - q, 0.0, hi, xtol=1e-300, rtol=4 * np.finfo(float).eps, maxiter=500)
+    for _ in range(64):
+        if spend(lam) <= q:
+            break
+        lam = np.nextafter(lam, np.inf)
+    else:
+        raise ArithmeticError("could not reach a feasible multiplier")
+    return expit((r - delta - lam) / T), float(lam)
 
 
 def dr_value(pi, gamma):
