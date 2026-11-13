@@ -1,4 +1,7 @@
-.venv/
+.venv
+.venv.nosync/
+
+.venv*/
 
 __pycache__/
 *.py[cod]
@@ -12,3 +15,5 @@ data/interim/
 data/processed/
 
 results/models/
+
+*.egg-info/

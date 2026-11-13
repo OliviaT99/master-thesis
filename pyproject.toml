@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thesis"
+version = "0.1.0"
+description = "Budget-constrained policy-targeted CATE estimation (master's thesis)"
+requires-python = ">=3.10"
+# Runtime dependencies stay in requirements.txt; this file only makes src/thesis importable.
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: end-to-end runs on X5-sized synthetic data (~15 s)"]

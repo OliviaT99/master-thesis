@@ -1,0 +1,19 @@
+{
+  "n_train": 100019,
+  "n_validation": 40008,
+  "n_features": 34,
+  "propensity": 0.4998,
+  "ate_train_dr": 0.03148465266935688,
+  "ate_validation_dr": 0.03091152693978465,
+  "ridge_alpha": 56234.13251903491,
+  "ridge_alpha_at_grid_edge": false,
+  "flex_iterations": 49,
+  "linear_blp_slope_t": 7.8779738151953715,
+  "heterogeneity_detectable": true,
+  "max_headroom_z": -0.4940364416990779,
+  "test_mde80_per_1000_median": 4.608736526372806,
+  "min_gain_per_1000": 3.0,
+  "test_powered": false,
+  "gate": "B",
+  "gate_rule": "A if linear-score BLP slope t > 2 AND median test-set MDE (80% power, 5% two-sided) for an arm-level paired difference <= min_gain; otherwise B. Exploratory, unadjusted."
+}

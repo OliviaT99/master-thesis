@@ -1,7 +1,8 @@
 data:
   treatment: treatment_flg
   outcome: target
-  propensity: 0.4998
+  propensity: 0.4998          # empirical treated share; design probability still to be documented
+  reference_date: "2019-03-19"  # purchases are pre-communication and end 2019-03-18
 
 split:
   train: 0.50
@@ -9,20 +10,33 @@ split:
   test: 0.30
   random_state: 42
 
+# Decisions D1-D4, 30 Oct 2026 (see the review doc / memo v0.4)
 policy:
-  constraint: "top_k"
-  budget_fraction: 0.30
+  constraint: expected_budget   # E[c~(X) pi(X)] <= q, costs normalised by the train mean
+  budget_grid: [0.1, 0.3, 0.5]  # q = per-customer budget in units of mean cost
+  primary_budget: 0.3
+  cost_k_grid: [0.0, 1.0]       # c_k = (1-k) + k * h~ / mean_train(h~), h = avg basket value
+  cost_floor_quantile: 0.01     # positivity floor for h, from training data
+  deployment: smooth            # D1: calibrated smooth policy primary; hard allocation secondary
+  delta_over_T: 5               # D2: delta = 5 T
+  temperature_kappa_grid: [0.02, 0.05]  # D2: T = kappa * IQR(g0 / c~) on train; 0.1 dropped 13 Nov (delta=5T then goes slack)
 
 cate:
   pseudo_outcome: DR
-  function_class: segment
+  crossfit_folds: 5
+  function_class: linear        # D4: linear primary, segments secondary
+
+arms:                           # D3
+  baselines: [random, cost_only]
+  arm1: predictive_mu1
+  arm2: cate_gamma0
+  arm3: budget_ptcate
+  arm4: frauen_ptcate_plus_allocator
+  reference: flexible_dr
 
 ptcate:
-  gamma_grid:
-    - 0.0
-    - 0.2
-    - 0.4
-    - 0.8
-    - 0.9
-    - 0.98
+  gamma_grid: [0.0, 0.2, 0.4, 0.8, 0.9, 0.98]
   iterations: 1
+
+phase1:
+  min_gain_per_customer: 0.003  # smallest gain worth reporting, fixed before running
