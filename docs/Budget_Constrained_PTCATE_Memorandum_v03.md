@@ -13,8 +13,6 @@
 
 **Evidence convention:** DERIVED = algebra/proof checked in this revision; REPORT-TESTED = numerical result stated in the supplied report, not rerun here; PROPOSED = future protocol; UNVERIFIED = missing evidence or unresolved claim. The report’s executable script and CSV/JSON outputs were not attached to this chat. No report-only numerical diagnostic is presented as independently reproduced.
 
-**Source recovery update:** The user supplied the later counterexample derivation on 30 October 2026. Section 16.6 independently checks and integrates it. Its algebra and a new finite-support diagnostic were verified in this revision; the original REPORT.md experiments remain report-only.
-
 ---
 
 # 1. Research Objective and Motivation
