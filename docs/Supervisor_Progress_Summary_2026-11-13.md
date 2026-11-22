@@ -198,4 +198,4 @@ This is the standard fractional-knapsack solution. Every arm uses the same alloc
 - Cerulli (2026). *Optimal policy learning under budget and coverage constraints.* arXiv:2605.12235.
 - Chernozhukov et al. *Generic machine learning inference on heterogeneous treatment effects* (calibration/BLP test used in Phase 1).
 
-*Full derivations: Methodology Memorandum v0.3 (30 Oct 2026). Code and Phase 1 tables: GitHub `OliviaT99/master-thesis`.*
+*Full derivations: Methodology Memorandum v0.3 (30 Oct 2026).*
